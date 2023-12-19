@@ -10,7 +10,14 @@ type RomanNumeral struct {
 	Symbol string
 }
 
-var allRomanNumerals = []RomanNumeral{
+type RomanNumerals []RomanNumeral
+
+func (r RomanNumerals) ValueOf(symbol string) int {
+	idx := slices.IndexFunc(r, func(rn RomanNumeral) bool { return rn.Symbol == symbol })
+	return r[idx].Value
+}
+
+var allRomanNumerals = RomanNumerals{
 	{1000, "M"},
 	{900, "CM"},
 	{500, "D"},
@@ -42,28 +49,17 @@ func ConvertToRoman(arabic int) string {
 func ConvertToArabic(roman string) int {
 	var result int
 
-	/* 	for _, c := range roman {
-		idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
-		result += allRomanNumerals[idx].Value
-	} */
-
 	for i, c := range roman {
+		current_val := allRomanNumerals.ValueOf(string(c))
 		if i == 0 {
-			current := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
-			result += allRomanNumerals[current].Value
+			result += current_val
 			continue
 		}
-
-		prev_idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string([]rune(roman)[i-1]) })
-		current_idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
-		prev_val := allRomanNumerals[prev_idx].Value
-		current_val := allRomanNumerals[current_idx].Value
-
+		prev_val := allRomanNumerals.ValueOf(string([]rune(roman)[i-1]))
 		if current_val > prev_val {
 			result = result + current_val - prev_val*2
 			continue
 		}
-
 		result += current_val
 	}
 	return result
