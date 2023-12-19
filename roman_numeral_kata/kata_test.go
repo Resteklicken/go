@@ -53,13 +53,37 @@ func TestConversionToRoman(t *testing.T) {
 
 func TestConversionToArabic(t *testing.T) {
 	cases := []struct {
-		Roman string
 		Want  int
+		Roman string
 	}{
-		{"I", 1},
-		{"II", 2},
-		{"III", 3},
-		{"IV", 4},
+		{1, "I"},
+		{2, "II"},
+		{3, "III"},
+		{4, "IV"},
+		{5, "V"},
+		{6, "VI"},
+		{9, "IX"},
+		{10, "X"},
+		{11, "XI"},
+		{14, "XIV"},
+		{15, "XV"},
+		{39, "XXXIX"},
+		{40, "XL"},
+		{41, "XLI"},
+		{44, "XLIV"},
+		{49, "XLIX"},
+		{50, "L"},
+		{100, "C"},
+		{90, "XC"},
+		{400, "CD"},
+		{500, "D"},
+		{900, "CM"},
+		{1000, "M"},
+		{1984, "MCMLXXXIV"},
+		{3999, "MMMCMXCIX"},
+		{2014, "MMXIV"},
+		{1006, "MVI"},
+		{798, "DCCXCVIII"},
 	}
 	for _, test := range cases {
 		t.Run(fmt.Sprintf("%q -> %d", test.Roman, test.Want), func(t *testing.T) {

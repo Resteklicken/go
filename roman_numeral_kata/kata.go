@@ -40,23 +40,31 @@ func ConvertToRoman(arabic int) string {
 }
 
 func ConvertToArabic(roman string) int {
-	idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string([]rune(roman)[0]) })
-	result := allRomanNumerals[idx].Value
+	var result int
 
-	for _, c := range roman[1:] {
+	/* 	for _, c := range roman {
 		idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
 		result += allRomanNumerals[idx].Value
+	} */
+
+	for i, c := range roman {
+		if i == 0 {
+			current := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
+			result += allRomanNumerals[current].Value
+			continue
+		}
+
+		prev_idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string([]rune(roman)[i-1]) })
+		current_idx := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
+		prev_val := allRomanNumerals[prev_idx].Value
+		current_val := allRomanNumerals[current_idx].Value
+
+		if current_val > prev_val {
+			result = result + current_val - prev_val*2
+			continue
+		}
+
+		result += current_val
 	}
 	return result
-
-	/* for i, c := range []rune(roman[1:]) {
-		prev := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
-		current := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string([]rune(roman)[i]) })
-		switch {
-		case allRomanNumerals[prev].Value >= allRomanNumerals[current].Value:
-			result += allRomanNumerals[current].Value
-		default:
-			result = result + allRomanNumerals[current].Value - allRomanNumerals[prev].Value
-		}
-	} */
 }
