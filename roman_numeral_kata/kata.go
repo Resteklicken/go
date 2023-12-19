@@ -47,20 +47,19 @@ func ConvertToRoman(arabic int) string {
 }
 
 func ConvertToArabic(roman string) int {
-	var result int
-
+	var (
+		result      int
+		current_val int
+		prev_val    int
+	)
 	for i, c := range roman {
-		current_val := allRomanNumerals.ValueOf(string(c))
-		if i == 0 {
-			result += current_val
-			continue
-		}
-		prev_val := allRomanNumerals.ValueOf(string([]rune(roman)[i-1]))
-		if current_val > prev_val {
+		current_val = allRomanNumerals.ValueOf(string(c))
+		if i > 0 && current_val > prev_val {
 			result = result + current_val - prev_val*2
 			continue
 		}
 		result += current_val
+		prev_val = current_val
 	}
 	return result
 }
