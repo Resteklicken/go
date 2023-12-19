@@ -48,4 +48,15 @@ func ConvertToArabic(roman string) int {
 		result += allRomanNumerals[idx].Value
 	}
 	return result
+
+	/* for i, c := range []rune(roman[1:]) {
+		prev := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string(c) })
+		current := slices.IndexFunc(allRomanNumerals, func(rn RomanNumeral) bool { return rn.Symbol == string([]rune(roman)[i]) })
+		switch {
+		case allRomanNumerals[prev].Value >= allRomanNumerals[current].Value:
+			result += allRomanNumerals[current].Value
+		default:
+			result = result + allRomanNumerals[current].Value - allRomanNumerals[prev].Value
+		}
+	} */
 }
